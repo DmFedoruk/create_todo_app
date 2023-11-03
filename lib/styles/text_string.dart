@@ -1,14 +1,5 @@
 class TextString {
-  static const String greetingsString = 'Good morning';
-  static const List<String> shortNamesDaysOfWeek = [
-    'Mon',
-    'Tue',
-    'Wed',
-    'Thu',
-    'Fri',
-    'Sat',
-    'Sun'
-  ];
+  static const String greetingsString = 'Good morning👋';
 
   static const String monday = 'Monday';
   static const String thuesday = 'Thuesday';

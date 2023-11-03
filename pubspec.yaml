@@ -12,6 +12,9 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   scoped_model: ^2.0.0
+  flutter_screenutil: ^5.9.0
+  carousel_slider: ^4.2.1
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

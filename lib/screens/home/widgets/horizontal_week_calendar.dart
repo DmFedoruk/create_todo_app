@@ -36,12 +36,12 @@ class _HorizontalWeekCalendarState extends State<HorizontalWeekCalendar> {
 
   DateTime getDate(DateTime d) => DateTime(d.year, d.month, d.day);
 
+  //create base list of week
   initCalender() {
     final date = DateTime.now();
 
     DateTime startOfCurrentWeek =
         getDate(date.subtract(Duration(days: date.weekday - 1)));
-
     currentWeek.add(startOfCurrentWeek);
     for (int index = 0; index < 6; index++) {
       DateTime addDate = startOfCurrentWeek.add(Duration(days: (index + 1)));
@@ -49,29 +49,41 @@ class _HorizontalWeekCalendarState extends State<HorizontalWeekCalendar> {
     }
 
     listOfWeeks.add(currentWeek);
-
     getMorePreviousWeeks();
+    getMoreNextWeeks();
   }
 
-  getMorePreviousWeeks() {
-    List<DateTime> minus7Days = [];
-    DateTime startFrom = listOfWeeks.isEmpty
+  DateTime getStartDate(bool isLast) {
+    return listOfWeeks.isEmpty
         ? DateTime.now()
         : listOfWeeks[currentWeekIndex].isEmpty
             ? DateTime.now()
-            : listOfWeeks[currentWeekIndex][0];
+            : listOfWeeks[currentWeekIndex][isLast ? 0 : 6];
+  }
+
+  //add previous week
+  getMorePreviousWeeks() {
+    List<DateTime> minus7Days = [];
+    DateTime startFrom = getStartDate(true);
 
     for (int index = 0; index < 7; index++) {
       DateTime minusDate = startFrom.add(Duration(days: -(index + 1)));
       minus7Days.add(minusDate);
     }
-    // List<DateTime> plus7Days = [];
-    // for (int index = 0; index < 7; index++) {
-    //   DateTime plusDate = startFrom.add(Duration(days: (index + 1)));
-    //   plus7Days.add(plusDate);
-    // }
     listOfWeeks.add(minus7Days.reversed.toList());
-    //listOfWeeks.add(plus7Days.reversed.toList());
+    setState(() {});
+  }
+
+  //add next week
+  getMoreNextWeeks() {
+    List<DateTime> plus7Days = [];
+    DateTime startFrom = getStartDate(false);
+    for (int index = 0; index < 7; index++) {
+      DateTime plusDate = startFrom.add(Duration(days: (index + 1)));
+      plus7Days.add(plusDate);
+    }
+    listOfWeeks.insert(0, plus7Days.toList());
+    print(listOfWeeks);
     setState(() {});
   }
 
@@ -82,27 +94,23 @@ class _HorizontalWeekCalendarState extends State<HorizontalWeekCalendar> {
     widget.onDateChange?.call(selectedDate);
   }
 
+  //change current week for other
   onWeekChange(index) {
+    DateTime last = listOfWeeks[currentWeekIndex][6];
     currentWeekIndex = index;
     currentWeek = listOfWeeks[currentWeekIndex];
-
     if (currentWeekIndex + 1 == listOfWeeks.length) {
       getMorePreviousWeeks();
-    } else {}
+    } else if (currentWeekIndex == 0) {
+      // print(currentWeekIndex);
+
+      // getMoreNextWeeks();
+
+      // print('new next');
+    }
 
     widget.onWeekChange?.call(currentWeek);
     setState(() {});
-  }
-
-  // =================
-
-  isNextDisabled() {
-    return listOfWeeks[currentWeekIndex].last.isBefore(DateTime.now());
-  }
-
-  isCurrentYear() {
-    return DateFormat('yyyy').format(currentWeek[0]) ==
-        DateFormat('yyyy').format(today);
   }
 
   @override
@@ -166,6 +174,7 @@ class _HorizontalWeekCalendarState extends State<HorizontalWeekCalendar> {
         ],
         options: CarouselOptions(
           scrollPhysics: const ClampingScrollPhysics(),
+          initialPage: 1,
           height: Styles.dayFromListHeight,
           viewportFraction: 1,
           enableInfiniteScroll: false,

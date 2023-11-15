@@ -4,35 +4,52 @@ import 'package:create_todo_app/screens/home/widgets/list_of_tasks.dart';
 import 'package:create_todo_app/styles/text_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../styles/styles.dart';
 
 class HomeScreen extends StatelessWidget {
-  // ignore: prefer_typing_uninitialized_variables
-  final taskManager;
-  const HomeScreen(this.taskManager, {super.key});
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ScopedTasks taskManager = ScopedTasks();
     return Scaffold(
       body: ScopedModel<ScopedTasks>(
         model: taskManager,
-        child: SingleChildScrollView(
-          child: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                _customAppBar(),
-                const HorizontalWeekCalendar(),
-                const ListOfTasks()
-              ],
-            ),
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              _customAppBar(),
+              const HorizontalWeekCalendar(),
+              FutureBuilder(
+                  future: _getData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.data != null) {
+                      taskManager.taskBox = snapshot.data;
+                      taskManager.initTaskList();
+                      return const ListOfTasks();
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  }),
+            ],
           ),
         ),
       ),
       bottomNavigationBar: _bottomNavigationBar(),
     );
+  }
+
+  Future<Box> _getData() async {
+    final tasksBox = await Hive.openBox('tasks');
+    // List<Task> tasks = Task.fetchAll();
+
+    // tasksBox.addAll(tasks);
+    //await Future.delayed(Duration(seconds: 10));
+    return tasksBox;
   }
 
   Widget _bottomNavigationBar() => Stack(
@@ -41,7 +58,8 @@ class HomeScreen extends StatelessWidget {
             height: 1.0.h,
             color: Styles.extraLightGrey,
           ),
-          SizedBox(
+          Container(
+              color: Colors.white,
               height: Styles.bottomBarHeightWithoutDiv,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

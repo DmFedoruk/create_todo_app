@@ -29,4 +29,17 @@ class TextString {
   static const String all = 'All';
   static const String taskCompleted = 'Task completed';
   static const String completionRate = 'Completion rate';
+
+  static const String jan = 'Jan';
+  static const String feb = 'Feb';
+  static const String mar = 'Mar';
+  static const String apr = 'Apr';
+  static const String may = 'May';
+  static const String jun = 'Jun';
+  static const String jul = 'Jul';
+  static const String aug = 'Aug';
+  static const String sep = 'Sep';
+  static const String oct = 'Oct';
+  static const String nov = 'Nov';
+  static const String dec = 'Dec';
 }

@@ -17,7 +17,7 @@ class TaskTypeAdapter extends TypeAdapter<TaskType> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TaskType(
-      fields[0] as Color,
+      fields[0] as int,
       fields[1] as String,
     );
   }

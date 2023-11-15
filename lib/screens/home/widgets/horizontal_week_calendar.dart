@@ -3,6 +3,9 @@ import 'package:create_todo_app/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+import '../../../scoped_models/scoped_tasks.dart';
 
 class HorizontalWeekCalendar extends StatefulWidget {
   final Function(DateTime)? onDateChange;
@@ -125,46 +128,52 @@ class _HorizontalWeekCalendarState extends State<HorizontalWeekCalendar> {
                         for (int weekIndex = 0;
                             weekIndex < listOfWeeks[ind].length;
                             weekIndex++)
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                onDateSelect(
-                                  listOfWeeks[ind][weekIndex],
-                                );
-                              },
-                              child: Container(
-                                alignment: Alignment.center,
-                                height: Styles.oneDayHeight,
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "${listOfWeeks[ind][weekIndex].day}",
-                                      textAlign: TextAlign.center,
-                                      style: numberFromListtextStyle(
-                                          ind, weekIndex),
+                          ScopedModelDescendant<ScopedTasks>(
+                            builder: (context, child, model) {
+                              return Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    onDateSelect(listOfWeeks[ind][weekIndex]);
+                                    model.changeSelectDate(
+                                        listOfWeeks[ind][weekIndex]);
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: Styles.oneDayHeight,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
                                     ),
-                                    Text(
-                                        DateFormat(
-                                          'EEE',
-                                        ).format(
-                                          listOfWeeks[ind][weekIndex],
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "${listOfWeeks[ind][weekIndex].day}",
+                                          textAlign: TextAlign.center,
+                                          style: numberFromListtextStyle(
+                                              ind, weekIndex),
                                         ),
-                                        textAlign: TextAlign.center,
-                                        style: dayFromListtextStyle(
-                                            ind, weekIndex)),
-                                    SizedBox(
-                                      height: 12.0.h,
+                                        Text(
+                                            DateFormat(
+                                              'EEE',
+                                            ).format(
+                                              listOfWeeks[ind][weekIndex],
+                                            ),
+                                            textAlign: TextAlign.center,
+                                            style: dayFromListtextStyle(
+                                                ind, weekIndex)),
+                                        SizedBox(
+                                          height: 12.0.h,
+                                        ),
+                                        _billet(ind, weekIndex)
+                                      ],
                                     ),
-                                    _billet(ind, weekIndex)
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
+                              );
+                            },
                           ),
                       ],
                     ),

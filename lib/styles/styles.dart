@@ -17,6 +17,7 @@ class Styles {
   static final double appBarHeight = 80.0.h;
   static final double avatarRadius = 32.0.r;
   static final double iconSize = 48.0.r;
+  static final double fillPartOfScreen = 502.0.h;
 
   //list calendar
   static final double dayListHeight = 68.0.h;
@@ -34,8 +35,6 @@ class Styles {
   static final double taskHeight = 48.0.h;
   static final double taskTitleWidth = 234.0.w;
   static final double taskTypeCheck = 8.0.r;
-
-  static final int itemCountForTest = 4;
 
   static const Color lightGrey = Color.fromRGBO(192, 195, 201, 1);
   static const Color grey = Color.fromRGBO(126, 132, 145, 1);
@@ -81,9 +80,15 @@ class Styles {
       height: 16 / 10);
 
   static final List<TaskType> tastTypes = [
-    TaskType(Colors.amber, 'Work'),
-    TaskType(Colors.red, 'Hobby'),
-    TaskType(Colors.blue, 'Personal'),
-    TaskType(Colors.green, 'Lifestyle'),
+    TaskType(0, 'Work'),
+    TaskType(1, 'Hobby'),
+    TaskType(2, 'Personal'),
+    TaskType(3, 'Lifestyle'),
+  ];
+  static const List<Color> colorsList = [
+    Colors.amber,
+    Colors.red,
+    Colors.blue,
+    Colors.green,
   ];
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 import '../styles/styles.dart';
@@ -18,8 +19,15 @@ class Task extends HiveObject {
   Task(this.date, this.text, this.isCompleted, this.taskType);
 
   static List<Task> fetchAll() {
-    Task t1 = Task(DateTime.now(), 'Test 1', false, Styles.tastTypes[1]);
-    Task t2 = Task(DateTime.now().add(const Duration(days: 1)), 'Test 2', false,
+    Task t1 = Task(
+        DateUtils.dateOnly(DateTime.now()).add(const Duration(days: -1)),
+        'Test 1',
+        false,
+        Styles.tastTypes[1]);
+    Task t2 = Task(
+        DateUtils.dateOnly(DateTime.now()).add(const Duration(days: 2)),
+        'Test 2',
+        false,
         Styles.tastTypes[2]);
     return [t1, t2];
   }

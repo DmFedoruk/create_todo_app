@@ -11,6 +11,7 @@ class Styles {
   static final double calendarNumberFontSize = 18.0.sp;
   static final double calendarDayFontSize = 10.0.sp;
   static final double taskNameSize = 14.0.sp;
+  static final double specialIconTextSize = 12.0.sp;
 
   //start page
   static final double appStatusStrokeHeight = 28.0.h;
@@ -35,6 +36,20 @@ class Styles {
   static final double taskHeight = 48.0.h;
   static final double taskTitleWidth = 234.0.w;
   static final double taskTypeCheck = 8.0.r;
+
+  //bottom sheet to add task
+  static final double corners = 16.0.r;
+  static final double fieldHeight = 136.0.h;
+  static final double handleHeight = 4.0.h;
+  static final double handleWidth = 48.0.w;
+  static final double textFieldHeight = 40.0.h;
+  //special button for bottom sheet
+  static final double specialIconButtonHeight = 40.0.h;
+  static final double specialIconButtonWidth = 87.0.w;
+  static final double specialIconButtonCorners = 10.0.r;
+  static final double specialIconSize = 20.0.r;
+  //confirm button
+  static final double confirmIconSize = 40.0.r;
 
   static const Color lightGrey = Color.fromRGBO(192, 195, 201, 1);
   static const Color grey = Color.fromRGBO(126, 132, 145, 1);
@@ -78,6 +93,20 @@ class Styles {
       fontWeight: FontWeight.w500,
       color: lightTextColor,
       height: 16 / 10);
+
+  static final textFieldHintStyle = TextStyle(
+      fontFamily: _fontNameDefault,
+      fontSize: taskNameSize,
+      fontWeight: FontWeight.w500,
+      color: lightGrey,
+      height: 20 / 14);
+
+  static final specialButtonText = TextStyle(
+      fontFamily: _fontNameDefault,
+      fontSize: specialIconTextSize,
+      fontWeight: FontWeight.w500,
+      color: lightTextColor,
+      height: 14 / 12);
 
   static final List<TaskType> tastTypes = [
     TaskType(0, 'Work'),

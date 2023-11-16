@@ -17,6 +17,9 @@ dependencies:
   intl: ^0.18.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  scrollable_positioned_list: ^0.3.8
+  flutter_localizations: 
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -38,6 +41,7 @@ flutter:
     - assets/icons/plus.png
     - assets/icons/search.png
     - assets/icons/statistics.png
+    - assets/icons/no_list.png
   fonts:
     - family: Plus Jakarta Sans
       fonts:

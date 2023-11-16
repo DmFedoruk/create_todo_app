@@ -2,6 +2,7 @@ import 'package:create_todo_app/scoped_models/scoped_tasks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../models/dto/task_for_date.dart';
 import '../../../models/dto/task_for_list.dart';
@@ -19,12 +20,14 @@ class ListOfTasks extends StatelessWidget {
         child: Padding(
             padding: EdgeInsets.only(top: 12.0.h),
             child: ScopedModelDescendant<ScopedTasks>(
-              builder: (context, child, model) => ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: model.listOfTaskForDays.length,
-                  itemBuilder: (context, index) {
-                    return _day(model.listOfTaskForDays[index]);
-                  }),
+              builder: (context, child, model) =>
+                  ScrollablePositionedList.builder(
+                      itemScrollController: model.listViewController,
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: model.listOfTaskForDays.length,
+                      itemBuilder: (context, index) {
+                        return _day(model.listOfTaskForDays[index]);
+                      }),
             )),
       ),
     );

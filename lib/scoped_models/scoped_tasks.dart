@@ -3,22 +3,41 @@ import 'dart:collection';
 import 'package:create_todo_app/models/dto/task_for_list.dart';
 import 'package:create_todo_app/models/task.dart';
 import 'package:create_todo_app/styles/text_string.dart';
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../models/dto/task_for_date.dart';
 
 class ScopedTasks extends Model {
+  final ItemScrollController listViewController = ItemScrollController();
+
   DateTime now = DateTime.now();
+  DateTime selectedDate = DateTime.now();
+  DateTime dateForNewTask = DateTime.now();
+
   List<Task> tasks = [];
   List<TaskForDate> listOfTaskForDays = [];
 
+  int scrollIndex = 0;
+
   Box? taskBox;
 
-  DateTime selectedDate = DateTime.now();
+  void scrollDown() {
+    scrollFunction();
+    if (scrollIndex != -1) {
+      listViewController.scrollTo(
+        index: scrollIndex,
+        duration: const Duration(seconds: 1),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
+  }
 
   void changeSelectDate(DateTime date) {
     selectedDate = date;
+    scrollDown();
     notifyListeners();
   }
 
@@ -29,7 +48,13 @@ class ScopedTasks extends Model {
         tasks.add(task);
       }
       _calculateCountOfTaskForDays();
+      //scrollDown();
     }
+  }
+
+  void scrollFunction() {
+    scrollIndex = listOfTaskForDays
+        .indexWhere((TaskForDate element) => element.date == selectedDate);
   }
 
   void _calculateCountOfTaskForDays() {
@@ -159,5 +184,18 @@ class ScopedTasks extends Model {
         break;
     }
     return month;
+  }
+
+  //choise darte for new task
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        locale: const Locale('en', 'GB'),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null) {
+      dateForNewTask = picked;
+    }
   }
 }

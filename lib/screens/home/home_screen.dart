@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../styles/styles.dart';
+import 'widgets/bottom_navigation_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -15,32 +16,32 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ScopedTasks taskManager = ScopedTasks();
-    return Scaffold(
-      body: ScopedModel<ScopedTasks>(
+    return ScopedModel<ScopedTasks>(
         model: taskManager,
-        child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _customAppBar(),
-              const HorizontalWeekCalendar(),
-              FutureBuilder(
-                  future: _getData(),
-                  builder: (context, snapshot) {
-                    if (snapshot.data != null) {
-                      taskManager.taskBox = snapshot.data;
-                      taskManager.initTaskList();
-                      return const ListOfTasks();
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  }),
-            ],
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _customAppBar(),
+                const HorizontalWeekCalendar(),
+                FutureBuilder(
+                    future: _getData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.data != null) {
+                        taskManager.taskBox = snapshot.data;
+                        taskManager.initTaskList();
+                        return const ListOfTasks();
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    }),
+              ],
+            ),
           ),
-        ),
-      ),
-      bottomNavigationBar: _bottomNavigationBar(),
-    );
+          bottomNavigationBar: const CustomBottomNavigationBar(),
+        ));
   }
 
   Future<Box> _getData() async {
@@ -51,58 +52,6 @@ class HomeScreen extends StatelessWidget {
     //await Future.delayed(Duration(seconds: 10));
     return tasksBox;
   }
-
-  Widget _bottomNavigationBar() => Stack(
-        children: [
-          Container(
-            height: 1.0.h,
-            color: Styles.extraLightGrey,
-          ),
-          Container(
-              color: Colors.white,
-              height: Styles.bottomBarHeightWithoutDiv,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 8.0.w),
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {},
-                          child: Image.asset(
-                            'assets/icons/menu.png',
-                            height: Styles.iconSize,
-                            width: Styles.iconSize,
-                          ),
-                        ),
-                        SizedBox(width: 4.0.w),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Image.asset(
-                            'assets/icons/search.png',
-                            height: Styles.iconSize,
-                            width: Styles.iconSize,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 16.0.w),
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Image.asset(
-                        'assets/icons/add.png',
-                        height: Styles.addIconSize,
-                        width: Styles.addIconSize,
-                      ),
-                    ),
-                  )
-                ],
-              )),
-        ],
-      );
 
   Widget _customAppBar() {
     return SizedBox(

@@ -26,27 +26,30 @@ class ListOfTasks extends StatelessWidget {
                       physics: const BouncingScrollPhysics(),
                       itemCount: model.listOfTaskForDays.length,
                       itemBuilder: (context, index) {
-                        return _day(model.listOfTaskForDays[index]);
+                        return model
+                                .listOfTaskForDays[index].listOfTasks.isEmpty
+                            ? const SizedBox()
+                            : _day(model.listOfTaskForDays[index], index);
                       }),
             )),
       ),
     );
   }
 
-  Container _day(TaskForDate taskForDate) {
+  Container _day(TaskForDate taskForDate, int index) {
     return Container(
       margin: EdgeInsets.only(bottom: 16.0.h),
       padding: EdgeInsets.symmetric(horizontal: 20.0.w),
       height: Styles.titleHeight +
           taskForDate.listOfTasks.length * (Styles.taskHeight + 2.0.h),
       child: Column(children: [
-        _textItem(taskForDate.date),
-        _taskList(taskForDate.listOfTasks)
+        _firstTextItem(taskForDate.date),
+        _taskList(taskForDate.listOfTasks, index)
       ]),
     );
   }
 
-  Widget _textItem(DateTime date) =>
+  Widget _firstTextItem(DateTime date) =>
       ScopedModelDescendant<ScopedTasks>(builder: (context, child, model) {
         List<String> namesOfDays = model.calculateNameOfDays(date);
         return SizedBox(
@@ -64,15 +67,21 @@ class ListOfTasks extends StatelessWidget {
             ));
       });
 
-  SizedBox _taskList(List<TaskForList> taskList) {
+  SizedBox _taskList(List<TaskForList> taskList, int dayIndex) {
     return SizedBox(
       height: taskList.length * (Styles.taskHeight + 2.0.h),
-      child: ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: taskList.length,
-          itemBuilder: (context, index) {
-            return _taskItem(taskList[index]);
-          }),
+      child: ScopedModelDescendant<ScopedTasks>(
+        builder: (context, child, model) => ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: taskList.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                  onTap: () {
+                    model.completeTask(taskList[index], dayIndex);
+                  },
+                  child: _taskItem(taskList[index]));
+            }),
+      ),
     );
   }
 
@@ -137,8 +146,6 @@ class ListOfTasks extends StatelessWidget {
           return null;
         }),
         value: value,
-        onChanged: (val) {
-          value = val!;
-        });
+        onChanged: null);
   }
 }

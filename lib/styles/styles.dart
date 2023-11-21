@@ -51,6 +51,9 @@ class Styles {
   //confirm button
   static final double confirmIconSize = 40.0.r;
 
+  //list of task types
+  static final double taskTypeRectangleSize = 16.0.r;
+
   static const Color lightGrey = Color.fromRGBO(192, 195, 201, 1);
   static const Color grey = Color.fromRGBO(126, 132, 145, 1);
   static const Color green = Color.fromRGBO(0, 168, 107, 1);
@@ -108,7 +111,7 @@ class Styles {
       color: lightTextColor,
       height: 14 / 12);
 
-  static final List<TaskType> tastTypes = [
+  static final List<TaskType> taskTypes = [
     TaskType(0, 'Work'),
     TaskType(1, 'Hobby'),
     TaskType(2, 'Personal'),

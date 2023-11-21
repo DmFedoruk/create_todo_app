@@ -30,6 +30,8 @@ class TextString {
   static const String taskCompleted = 'Task completed';
   static const String completionRate = 'Completion rate';
 
+  static const String emptyTask = 'Please enter some task';
+
   static const String jan = 'Jan';
   static const String feb = 'Feb';
   static const String mar = 'Mar';

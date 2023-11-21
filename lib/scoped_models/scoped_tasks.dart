@@ -9,9 +9,12 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../models/dto/task_for_date.dart';
+import '../models/task_type.dart';
 
 class ScopedTasks extends Model {
   final ItemScrollController listViewController = ItemScrollController();
+  final TextEditingController textController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
   DateTime now = DateTime.now();
   DateTime selectedDate = DateTime.now();
@@ -19,10 +22,14 @@ class ScopedTasks extends Model {
 
   List<Task> tasks = [];
   List<TaskForDate> listOfTaskForDays = [];
+  TaskType? selectedTaskType;
 
   int scrollIndex = 0;
+  int MAX_ITEM = -1;
 
   Box? taskBox;
+
+  bool typeIsEmpty = false;
 
   void scrollDown() {
     scrollFunction();
@@ -41,11 +48,25 @@ class ScopedTasks extends Model {
     notifyListeners();
   }
 
+  void changeSelectTaskType(TaskType taskType) {
+    selectedTaskType = taskType;
+    typeIsEmpty = false;
+    scrollDown();
+    notifyListeners();
+  }
+
   void initTaskList() {
+    tasks = [];
+    listOfTaskForDays = [];
     if (taskBox != null) {
       for (int i = 0; i < taskBox!.values.length; i++) {
         Task task = taskBox!.getAt(i);
-        tasks.add(task);
+        if (!task.isCompleted) {
+          tasks.add(task);
+          if (task.id > MAX_ITEM) {
+            MAX_ITEM = task.id;
+          }
+        }
       }
       _calculateCountOfTaskForDays();
       //scrollDown();
@@ -90,7 +111,7 @@ class ScopedTasks extends Model {
 
   TaskForList _generateOneTask(Task task) {
     TaskForList outputItem =
-        TaskForList(task.text, task.taskType, task.isCompleted);
+        TaskForList(task.id, task.text, task.taskType, task.isCompleted);
     return outputItem;
   }
 
@@ -113,6 +134,27 @@ class ScopedTasks extends Model {
       outputList.add("${_calculateMonth(date.month)}  ${date.day.toString()}");
     }
     return outputList;
+  }
+
+  String calculateDayForButton() {
+    String day = '';
+    if (dateForNewTask.year == now.year &&
+        dateForNewTask.month == now.month &&
+        dateForNewTask.day == now.day) {
+      day = TextString.today;
+    } else if (dateForNewTask.year == now.year &&
+        dateForNewTask.month == now.month &&
+        dateForNewTask.day - 1 == now.day) {
+      day = TextString.tomorrow;
+    } else if (dateForNewTask.year == now.year &&
+        dateForNewTask.month == now.month &&
+        dateForNewTask.day + 1 == now.day) {
+      day = TextString.yesterday;
+    } else {
+      day =
+          "${_calculateMonth(dateForNewTask.month)}  ${dateForNewTask.day.toString()}";
+    }
+    return day;
   }
 
   String _calculateWeekday(int weekCode) {
@@ -197,5 +239,47 @@ class ScopedTasks extends Model {
     if (picked != null) {
       dateForNewTask = picked;
     }
+    notifyListeners();
+  }
+
+  bool createTask() {
+    if (formKey.currentState != null) {
+      if (selectedTaskType == null) {
+        typeIsEmpty = true;
+      }
+      bool isValid = formKey.currentState!.validate();
+      if (!typeIsEmpty && isValid) {
+        MAX_ITEM += 1;
+        Task newTask = Task(MAX_ITEM, DateUtils.dateOnly(dateForNewTask),
+            textController.text, false, selectedTaskType!);
+        taskBox!.add(newTask);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void resetDate() {
+    dateForNewTask = DateTime.now();
+    textController.text = '';
+    selectedTaskType = null;
+    typeIsEmpty = false;
+  }
+
+  void updateTaskList() {
+    initTaskList();
+    notifyListeners();
+  }
+
+  void completeTask(TaskForList task, int index) async {
+    Task dbTask = taskBox!.getAt(task.id);
+    task.isCompleted = !task.isCompleted;
+    dbTask.isCompleted = task.isCompleted;
+    notifyListeners();
+    taskBox!.putAt(task.id, dbTask);
+    TaskForDate taskForDate = listOfTaskForDays[index];
+    await Future.delayed(const Duration(milliseconds: 1500));
+    taskForDate.listOfTasks.remove(task);
+    notifyListeners();
   }
 }

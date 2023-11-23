@@ -22,43 +22,46 @@ class CustomBottomNavigationBar extends StatelessWidget {
         Container(
             color: Colors.white,
             height: Styles.bottomBarHeightWithoutDiv,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 8.0.w),
-                  child: Row(
-                    children: [
-                      _bottomButton('assets/icons/menu.png'),
-                      SizedBox(width: 4.0.w),
-                      _bottomButton('assets/icons/search.png'),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 16.0.w),
-                  child: ScopedModelDescendant<ScopedTasks>(
-                      builder: (context, child, model) => GestureDetector(
-                            onTap: () {
-                              _showModalButtomSheet(context, model);
-                              model.resetDate();
-                            },
-                            child: Image.asset(
-                              'assets/icons/add.png',
-                              height: Styles.addIconSize,
-                              width: Styles.addIconSize,
-                            ),
-                          )),
-                )
-              ],
-            )),
+            child: ScopedModelDescendant<ScopedTasks>(
+                builder: (context, child, model) => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 8.0.w),
+                          child: Row(
+                            children: [
+                              _bottomButton('assets/icons/menu.png', () {}),
+                              SizedBox(width: 4.0.w),
+                              _bottomButton('assets/icons/search.png', () {
+                                model.pushToSearchScreen(context);
+                              }),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(right: 16.0.w),
+                            child: GestureDetector(
+                              onTap: () {
+                                _showModalButtomSheet(context, model);
+                                model.resetDate();
+                              },
+                              child: Image.asset(
+                                'assets/icons/add.png',
+                                height: Styles.addIconSize,
+                                width: Styles.addIconSize,
+                              ),
+                            )),
+                      ],
+                    ))),
       ],
     );
   }
 
-  GestureDetector _bottomButton(String asset) {
+  GestureDetector _bottomButton(String asset, Function function) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        function();
+      },
       child: Image.asset(
         asset,
         height: Styles.iconSize,
@@ -103,9 +106,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
+                        decoration: InputDecoration.collapsed(
                             focusColor: Colors.white,
-                            focusedBorder: InputBorder.none,
                             hintText: TextString.writeTask,
                             hintStyle: Styles.textFieldHintStyle),
                       ),
@@ -260,7 +262,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               decoration: BoxDecoration(
                   border: Border.all(
                       color: Styles.colorsList[taskType.color], width: 2.0),
-                  borderRadius: BorderRadius.circular(2.0.r)),
+                  borderRadius: BorderRadius.circular(4.0.r)),
             ),
             Text(
               taskType.name,

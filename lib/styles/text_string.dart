@@ -17,8 +17,8 @@ class TextString {
   static const String noList = 'No list';
   static const String newList = 'New list';
   static const String writeTask = '  Write your task';
-  static const String task = 'task';
-  static const String tasks = 'tasks';
+  static const String task = 'tasks';
+  static const String tasks = 'Tasks';
 
   static const String search = 'Search task of list';
 

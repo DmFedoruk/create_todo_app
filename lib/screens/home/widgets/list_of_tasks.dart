@@ -6,8 +6,10 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../models/dto/task_for_date.dart';
 import '../../../models/dto/task_for_list.dart';
-import '../../../models/task_type.dart';
 import '../../../styles/styles.dart';
+import '../../widgets/check_box.dart';
+import '../../widgets/title.dart';
+import '../../widgets/type_of_task.dart';
 
 class ListOfTasks extends StatelessWidget {
   const ListOfTasks({super.key});
@@ -98,54 +100,13 @@ class ListOfTasks extends StatelessWidget {
             Expanded(
               child: Row(
                 children: [
-                  _checkBox(task.isCompleted),
-                  _title(task.text),
+                  checkBox(task.isCompleted),
+                  title(task.text),
                 ],
               ),
             ),
-            _typeOfTask(task.type)
+            typeOfTask(task.type)
           ],
         ),
       );
-
-  Widget _typeOfTask(TaskType taskType) => Row(
-        children: [
-          Container(
-            margin: EdgeInsets.only(right: 4.0.w),
-            height: Styles.taskTypeCheck,
-            width: Styles.taskTypeCheck,
-            decoration: BoxDecoration(
-                border: Border.all(color: Styles.colorsList[taskType.color]),
-                borderRadius: BorderRadius.circular(2.0.r)),
-          ),
-          Text(taskType.name)
-        ],
-      );
-
-  Flexible _title(String text) {
-    return Flexible(
-      child: Container(
-        padding: EdgeInsets.only(bottom: 6.0.h, right: 12.0.w),
-        child: Text(text,
-            overflow: TextOverflow.ellipsis, style: Styles.taskTextStyle),
-      ),
-    );
-  }
-
-  Checkbox _checkBox(bool value) {
-    return Checkbox(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0.r)),
-        side: BorderSide.none,
-        checkColor: Styles.orange,
-        activeColor: Styles.checkboxColor,
-        fillColor: MaterialStateProperty.resolveWith((states) {
-          if (!states.contains(MaterialState.selected)) {
-            return Styles.checkboxColor;
-          }
-          return null;
-        }),
-        value: value,
-        onChanged: null);
-  }
 }

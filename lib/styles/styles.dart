@@ -54,6 +54,11 @@ class Styles {
   //list of task types
   static final double taskTypeRectangleSize = 16.0.r;
 
+  //search screen
+  static final double backButtonSize = 48.0.r;
+  static final double searchScreenTitle = 24.0.h;
+  static final double checkboxSize = 24.0.r;
+
   static const Color lightGrey = Color.fromRGBO(192, 195, 201, 1);
   static const Color grey = Color.fromRGBO(126, 132, 145, 1);
   static const Color green = Color.fromRGBO(0, 168, 107, 1);
@@ -110,6 +115,14 @@ class Styles {
       fontWeight: FontWeight.w500,
       color: lightTextColor,
       height: 14 / 12);
+
+  //search screen
+  static final searchScreenTaskTitle = TextStyle(
+      fontFamily: _fontNameDefault,
+      fontSize: calendarDayFontSize,
+      fontWeight: FontWeight.w500,
+      color: grey,
+      height: 16 / 10);
 
   static final List<TaskType> taskTypes = [
     TaskType(0, 'Work'),

@@ -10,6 +10,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../models/dto/task_for_date.dart';
 import '../models/task_type.dart';
+import '../screens/search/search_screen.dart';
 
 class ScopedTasks extends Model {
   final ItemScrollController listViewController = ItemScrollController();
@@ -281,5 +282,10 @@ class ScopedTasks extends Model {
     await Future.delayed(const Duration(milliseconds: 1500));
     taskForDate.listOfTasks.remove(task);
     notifyListeners();
+  }
+
+  void pushToSearchScreen(BuildContext context) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => SearchScreen(tasks, taskBox)));
   }
 }

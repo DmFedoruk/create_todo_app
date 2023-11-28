@@ -60,6 +60,7 @@ class ScopedTasks extends Model {
 
   void initTaskList() {
     singleton.taskBox = taskBox;
+    singleton.listOfTasks = tasks;
     tasks = [];
     listOfTaskForDays = [];
     if (taskBox != null) {
@@ -75,6 +76,7 @@ class ScopedTasks extends Model {
       _calculateCountOfTaskForDays();
       //scrollDown();
     }
+    singleton.listOfTasks = tasks;
   }
 
   void scrollFunction() {

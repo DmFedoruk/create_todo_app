@@ -7,6 +7,7 @@ import '../../../models/task_type.dart';
 import '../../../scoped_models/scoped_tasks.dart';
 import '../../../styles/styles.dart';
 import '../../../styles/text_string.dart';
+import '../../statistics/statistics_screen.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   const CustomBottomNavigationBar({super.key});
@@ -90,8 +91,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
                     height: Styles.handleHeight,
                     width: Styles.handleWidth,
                     margin: EdgeInsets.only(top: 16.0.h),
-                    decoration:
-                        const BoxDecoration(color: Styles.extraLightGrey),
+                    decoration: BoxDecoration(
+                        color: Styles.extraLightGrey,
+                        borderRadius: BorderRadius.circular(Styles.plugCorner)),
                   ),
                   Container(
                     height: Styles.textFieldHeight,
@@ -287,76 +289,60 @@ class CustomBottomNavigationBar extends StatelessWidget {
           return SingleChildScrollView(
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 16.0.w),
-              // child:
-              //  Column(
-              //   children: [
-              //     Container(
-              //       height: Styles.handleHeight,
-              //       width: Styles.handleWidth,
-              //       margin: EdgeInsets.only(top: 16.0.h),
-              //       decoration:
-              //           const BoxDecoration(color: Styles.extraLightGrey),
-              //     ),
-              //     Container(
-              //       height: Styles.textFieldHeight,
-              //       margin: EdgeInsets.symmetric(vertical: 20.0.h),
-              //       child: Form(
-              //         key: model.formKey,
-              //         child: TextFormField(
-              //           controller: model.textController,
-              //           autofocus: true,
-              //           cursorColor: Styles.textColor,
-              //           validator: (text) {
-              //             if (text == null || text.isEmpty) {
-              //               return TextString.emptyTask;
-              //             }
-              //             return null;
-              //           },
-              //           decoration: InputDecoration.collapsed(
-              //               focusColor: Colors.white,
-              //               hintText: TextString.writeTask,
-              //               hintStyle: Styles.textFieldHintStyle),
-              //         ),
-              //       ),
-              //     ),
-              //     SizedBox(
-              //         height: Styles.specialIconButtonHeight,
-              //         child: StatefulBuilder(
-              //             builder: (context, StateSetter setState) {
-              //           return Row(
-              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //             children: [
-              //               Row(
-              //                 mainAxisAlignment: MainAxisAlignment.start,
-              //                 children: [
-              //                   _specialIconButton('assets/icons/calendar.png',
-              //                       model.calculateDayForButton(), () async {
-              //                     await model.selectDate(context);
-              //                   }),
-              //                   SizedBox(width: 8.0.w),
-              //                   _listIconButton(context, model),
-              //                 ],
-              //               ),
-              //               _addTaskButton(model.dateForNewTask, () {
-              //                 setState(() {
-              //                   if (model.createTask()) {
-              //                     Navigator.pop(context);
-              //                     model.updateTaskList();
-              //                   }
-              //                   ;
-              //                 });
-              //               })
-              //             ],
-              //           );
-              //         })),
-              //     SizedBox(height: 16.0.h),
-              //     SizedBox(
-              //       height: MediaQuery.of(context).viewInsets.bottom,
-              //     ),
-              //   ],
-              // ),
+              child: Column(
+                children: [
+                  Container(
+                    height: Styles.handleHeight,
+                    width: Styles.handleWidth,
+                    margin: EdgeInsets.only(top: 16.0.h),
+                    decoration: BoxDecoration(
+                        color: Styles.extraLightGrey,
+                        borderRadius: BorderRadius.circular(Styles.plugCorner)),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 16.0.w, vertical: 20.0.h),
+                    child: Column(
+                      children: [
+                        itemForBottomSheet("assets/icons/statistics.png",
+                            TextString.statistics, () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const StatisticsScreen()));
+                        }),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           );
         });
+  }
+
+  Widget itemForBottomSheet(String asset, String text, Function function) {
+    return GestureDetector(
+      onTap: () {
+        function();
+      },
+      child: Container(
+        height: Styles.itemHeight,
+        decoration: const BoxDecoration(
+            border: Border(bottom: BorderSide(color: Styles.extraLightGrey))),
+        child: Row(children: [
+          Image.asset(
+            asset,
+            width: Styles.menuIconSize,
+            height: Styles.menuIconSize,
+          ),
+          SizedBox(
+            width: 8.0.w,
+          ),
+          Text(text)
+        ]),
+      ),
+    );
   }
 }

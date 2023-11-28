@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../models/task_type.dart';
+import 'text_string.dart';
 
 class Styles {
   static const _fontNameDefault = 'Plus Jakarta Sans';
@@ -12,6 +13,7 @@ class Styles {
   static final double calendarDayFontSize = 10.0.sp;
   static final double taskNameSize = 14.0.sp;
   static final double specialIconTextSize = 12.0.sp;
+  static final double numbersFontSize = 36.0.sp;
 
   //start page
   static final double appStatusStrokeHeight = 28.0.h;
@@ -38,6 +40,7 @@ class Styles {
   static final double taskTypeCheck = 8.0.r;
 
   //bottom sheet to add task
+  static final double plugCorner = 2.0.r;
   static final double corners = 16.0.r;
   static final double fieldHeight = 136.0.h;
   static final double handleHeight = 4.0.h;
@@ -59,6 +62,24 @@ class Styles {
   static final double searchScreenTitle = 24.0.h;
   static final double checkboxSize = 24.0.r;
 
+  //menu bottom sheet
+  static final double itemHeight = 48.0.h;
+  static final double menuIconSize = 24.0.h;
+  static final double statisticLeadingWidth = 140.0.w;
+
+  //statistics
+  static final double toggleButtonCorners = 10.0.r;
+  static final double togglePlugHeight = 40.0.h;
+  static final double toggleButtonHeight = 32.0.h;
+  static final double toggleButtonWidth = 75.0.w;
+  static final double countAndPercentHeigth = 76.0.h;
+  static final double countAndPercentWidth = 160.0.w;
+  static final double scheduleHeight = 132.0.h;
+  static final double scheduleHeightWithPadding = 116.0.h;
+  static final double dashItemLength = 5.0.h;
+  static final double separatorWidth = 50.0.w;
+  static final double taskTypeHeight = 20.0.h;
+
   static const Color lightGrey = Color.fromRGBO(192, 195, 201, 1);
   static const Color grey = Color.fromRGBO(126, 132, 145, 1);
   static const Color green = Color.fromRGBO(0, 168, 107, 1);
@@ -67,6 +88,11 @@ class Styles {
   static const Color lightTextColor = Color.fromRGBO(126, 132, 145, 1);
   static const Color extraLightGrey = Color.fromRGBO(241, 243, 243, 1);
   static const Color checkboxColor = Color.fromRGBO(244, 246, 246, 1);
+
+  static const Color redType = Color.fromRGBO(244, 71, 37, 1);
+  static const Color blueType = Color.fromRGBO(3, 127, 255, 1);
+  static const Color greenType = Color.fromRGBO(0, 168, 107, 1);
+  static const Color yellowType = Color.fromRGBO(244, 175, 37, 1);
 
   static final appBarStyle = TextStyle(
       fontFamily: _fontNameDefault,
@@ -124,6 +150,55 @@ class Styles {
       color: grey,
       height: 16 / 10);
 
+  //menu BottomSheet
+  static final menuBottomSheet = TextStyle(
+      fontFamily: _fontNameDefault,
+      fontSize: taskNameSize,
+      fontWeight: FontWeight.w500,
+      color: textColor,
+      height: 20 / 14);
+
+  //statistics screen
+  static final statisticScreenTitle = TextStyle(
+      fontFamily: _fontNameDefault,
+      fontSize: _titleFontSize,
+      fontWeight: FontWeight.w600,
+      color: textColor,
+      height: 28 / 20);
+
+  static final toggleButtonActive = TextStyle(
+      fontFamily: _fontNameDefault,
+      fontSize: specialIconTextSize,
+      fontWeight: FontWeight.w500,
+      color: textColor,
+      height: 16 / 12);
+
+  static final toggleButtonUnActive = TextStyle(
+      fontFamily: _fontNameDefault,
+      fontSize: specialIconTextSize,
+      fontWeight: FontWeight.w500,
+      color: lightTextColor,
+      height: 16 / 12);
+
+  static final countDescriptionStyle = TextStyle(
+      fontFamily: _fontNameDefault,
+      fontSize: taskNameSize,
+      fontWeight: FontWeight.w500,
+      color: lightTextColor,
+      height: 20 / 14);
+  static final countNumberStyle = TextStyle(
+      fontFamily: _fontNameDefault,
+      fontSize: numbersFontSize,
+      fontWeight: FontWeight.w600,
+      color: textColor,
+      height: 36 / 36);
+  static final countTextStyle = TextStyle(
+      fontFamily: _fontNameDefault,
+      fontSize: _titleFontSize,
+      fontWeight: FontWeight.w600,
+      color: lightTextColor,
+      height: 32 / 20);
+
   static final List<TaskType> taskTypes = [
     TaskType(0, 'Work'),
     TaskType(1, 'Hobby'),
@@ -131,9 +206,16 @@ class Styles {
     TaskType(3, 'Lifestyle'),
   ];
   static const List<Color> colorsList = [
-    Colors.amber,
-    Colors.red,
-    Colors.blue,
-    Colors.green,
+    yellowType,
+    redType,
+    blueType,
+    greenType,
+  ];
+
+  static const List<String> listOfPeriod = [
+    TextString.weekly,
+    TextString.moonthly,
+    TextString.yearly,
+    TextString.all
   ];
 }

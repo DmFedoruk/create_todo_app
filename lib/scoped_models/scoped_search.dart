@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import '../models/singleton.dart';
 import '../models/task.dart';
 import '../styles/styles.dart';
 
@@ -11,6 +12,7 @@ class ScopedSearch extends Model {
   List<Task> tasks = [];
   List<Task> tasksToShow = [];
   List<int> countOfTasks = List.filled(Styles.taskTypes.length, 0);
+  final singleton = Singleton();
 
   Box? taskBox;
 
@@ -26,6 +28,9 @@ class ScopedSearch extends Model {
   }
 
   void calculateCountOfTask() {
+    taskBox = singleton.taskBox;
+    tasks = singleton.listOfTasks;
+    tasksToShow = singleton.listOfTasks;
     for (Task item in tasks) {
       int i = 0;
       for (TaskType type in Styles.taskTypes) {
@@ -48,6 +53,18 @@ class ScopedSearch extends Model {
     tasksToShow.remove(task);
     tasks.remove(task);
     await Future.delayed(const Duration(milliseconds: 1500));
+    notifyListeners();
+  }
+
+  void searchTasksForType(TaskType type) {
+    List<Task> newTask = [];
+    textController.text = '';
+    for (Task item in tasks) {
+      if (item.taskType.name == type.name) {
+        newTask.add(item);
+      }
+    }
+    tasksToShow = newTask;
     notifyListeners();
   }
 }

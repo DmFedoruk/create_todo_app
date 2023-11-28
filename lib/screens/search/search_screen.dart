@@ -2,7 +2,6 @@ import 'package:create_todo_app/scoped_models/scoped_search.dart';
 import 'package:create_todo_app/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../models/task.dart';
@@ -13,17 +12,12 @@ import '../widgets/title.dart';
 import '../widgets/type_of_task.dart';
 
 class SearchScreen extends StatelessWidget {
-  final List<Task> tasks;
-  final Box? box;
-  const SearchScreen(this.tasks, this.box, {super.key});
+  const SearchScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final ScopedSearch searchManager = ScopedSearch();
-    searchManager.tasks = tasks;
-    searchManager.tasksToShow = tasks;
     searchManager.calculateCountOfTask();
-    searchManager.taskBox = box;
     return ScopedModel(
       model: searchManager,
       child: Scaffold(
@@ -46,7 +40,6 @@ class SearchScreen extends StatelessWidget {
                   )),
               title: TextField(
                 controller: searchManager.textController,
-                autofocus: true,
                 cursorColor: Styles.textColor,
                 onChanged: (value) {
                   searchManager.searchTasks();

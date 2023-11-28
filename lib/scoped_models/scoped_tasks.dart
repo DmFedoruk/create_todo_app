@@ -9,6 +9,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../models/dto/task_for_date.dart';
+import '../models/singleton.dart';
 import '../models/task_type.dart';
 import '../screens/search/search_screen.dart';
 
@@ -16,6 +17,7 @@ class ScopedTasks extends Model {
   final ItemScrollController listViewController = ItemScrollController();
   final TextEditingController textController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final singleton = Singleton();
 
   DateTime now = DateTime.now();
   DateTime selectedDate = DateTime.now();
@@ -57,6 +59,7 @@ class ScopedTasks extends Model {
   }
 
   void initTaskList() {
+    singleton.taskBox = taskBox;
     tasks = [];
     listOfTaskForDays = [];
     if (taskBox != null) {
@@ -285,7 +288,9 @@ class ScopedTasks extends Model {
   }
 
   void pushToSearchScreen(BuildContext context) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => SearchScreen(tasks, taskBox)));
+    singleton.taskBox = taskBox;
+    singleton.listOfTasks = tasks;
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const SearchScreen()));
   }
 }

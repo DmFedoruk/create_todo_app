@@ -32,6 +32,7 @@ class HomeScreen extends StatelessWidget {
                       if (snapshot.data != null) {
                         taskManager.taskBox = snapshot.data;
                         taskManager.initTaskList();
+
                         return const ListOfTasks();
                       } else {
                         return const Center(child: CircularProgressIndicator());

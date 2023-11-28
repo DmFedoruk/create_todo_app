@@ -30,7 +30,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
                           padding: EdgeInsets.only(left: 8.0.w),
                           child: Row(
                             children: [
-                              _bottomButton('assets/icons/menu.png', () {}),
+                              _bottomButton('assets/icons/menu.png', () {
+                                _showMoreButtomSheet(context);
+                              }),
                               SizedBox(width: 4.0.w),
                               _bottomButton('assets/icons/search.png', () {
                                 model.pushToSearchScreen(context);
@@ -272,5 +274,89 @@ class CustomBottomNavigationBar extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _showMoreButtomSheet(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.vertical(top: Radius.circular(Styles.corners))),
+        builder: (context) {
+          return SingleChildScrollView(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 16.0.w),
+              // child:
+              //  Column(
+              //   children: [
+              //     Container(
+              //       height: Styles.handleHeight,
+              //       width: Styles.handleWidth,
+              //       margin: EdgeInsets.only(top: 16.0.h),
+              //       decoration:
+              //           const BoxDecoration(color: Styles.extraLightGrey),
+              //     ),
+              //     Container(
+              //       height: Styles.textFieldHeight,
+              //       margin: EdgeInsets.symmetric(vertical: 20.0.h),
+              //       child: Form(
+              //         key: model.formKey,
+              //         child: TextFormField(
+              //           controller: model.textController,
+              //           autofocus: true,
+              //           cursorColor: Styles.textColor,
+              //           validator: (text) {
+              //             if (text == null || text.isEmpty) {
+              //               return TextString.emptyTask;
+              //             }
+              //             return null;
+              //           },
+              //           decoration: InputDecoration.collapsed(
+              //               focusColor: Colors.white,
+              //               hintText: TextString.writeTask,
+              //               hintStyle: Styles.textFieldHintStyle),
+              //         ),
+              //       ),
+              //     ),
+              //     SizedBox(
+              //         height: Styles.specialIconButtonHeight,
+              //         child: StatefulBuilder(
+              //             builder: (context, StateSetter setState) {
+              //           return Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //             children: [
+              //               Row(
+              //                 mainAxisAlignment: MainAxisAlignment.start,
+              //                 children: [
+              //                   _specialIconButton('assets/icons/calendar.png',
+              //                       model.calculateDayForButton(), () async {
+              //                     await model.selectDate(context);
+              //                   }),
+              //                   SizedBox(width: 8.0.w),
+              //                   _listIconButton(context, model),
+              //                 ],
+              //               ),
+              //               _addTaskButton(model.dateForNewTask, () {
+              //                 setState(() {
+              //                   if (model.createTask()) {
+              //                     Navigator.pop(context);
+              //                     model.updateTaskList();
+              //                   }
+              //                   ;
+              //                 });
+              //               })
+              //             ],
+              //           );
+              //         })),
+              //     SizedBox(height: 16.0.h),
+              //     SizedBox(
+              //       height: MediaQuery.of(context).viewInsets.bottom,
+              //     ),
+              //   ],
+              // ),
+            ),
+          );
+        });
   }
 }

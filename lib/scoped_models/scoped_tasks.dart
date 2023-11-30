@@ -66,6 +66,7 @@ class ScopedTasks extends Model {
     if (taskBox != null) {
       for (int i = 0; i < taskBox!.values.length; i++) {
         Task task = taskBox!.getAt(i);
+        print('${task.date}-${task.id}-${task.isCompleted}-${task.text}');
         if (!task.isCompleted) {
           tasks.add(task);
           if (task.id > MAX_ITEM) {
@@ -277,14 +278,13 @@ class ScopedTasks extends Model {
     notifyListeners();
   }
 
-  void completeTask(TaskForList task, int index) async {
+  void completeTask(TaskForList task, int index) {
     Task dbTask = taskBox!.getAt(task.id);
     task.isCompleted = !task.isCompleted;
     dbTask.isCompleted = task.isCompleted;
-    notifyListeners();
-    taskBox!.putAt(task.id, dbTask);
+    taskBox!.putAt(dbTask.id, dbTask);
+    dbTask.save();
     TaskForDate taskForDate = listOfTaskForDays[index];
-    await Future.delayed(const Duration(milliseconds: 1500));
     taskForDate.listOfTasks.remove(task);
     notifyListeners();
   }

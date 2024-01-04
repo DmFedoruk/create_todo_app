@@ -67,11 +67,11 @@ class ScopedTasks extends Model {
       for (int i = 0; i < taskBox!.values.length; i++) {
         Task task = taskBox!.getAt(i);
         print('${task.date}-${task.id}-${task.isCompleted}-${task.text}');
+        if (task.id > MAX_ITEM) {
+          MAX_ITEM = task.id;
+        }
         if (!task.isCompleted) {
           tasks.add(task);
-          if (task.id > MAX_ITEM) {
-            MAX_ITEM = task.id;
-          }
         }
       }
       _calculateCountOfTaskForDays();

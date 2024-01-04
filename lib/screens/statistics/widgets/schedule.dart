@@ -68,7 +68,7 @@ class Schedule extends StatelessWidget {
   Container line(double length, Color color) {
     return Container(
       height: Styles.taskTypeHeight,
-      width: length,
+      width: length.isNaN ? 0 : length,
       decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(Styles.dashItemLength)),

@@ -11,3 +11,4 @@ void main() async {
   Hive.registerAdapter(TaskTypeAdapter());
   runApp(const App());
 }
+ 

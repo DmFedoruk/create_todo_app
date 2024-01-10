@@ -58,7 +58,8 @@ class SearchScreen extends StatelessWidget {
                   SizedBox(height: 12.0.h),
                   _listOfItems(context, TextString.tasks, true),
                   SizedBox(height: 16.0.h),
-                  _listOfItems(context, TextString.list, false)
+                  _listOfItems(context, TextString.list, false),
+                  SizedBox()
                 ],
               ),
             ),
